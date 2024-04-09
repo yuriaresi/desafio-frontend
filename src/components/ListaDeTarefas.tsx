@@ -32,10 +32,15 @@ export const Tarefas = () => {
 
   const deletarTarefa = async (id: string) => {
     try {
-      const response = await api.delete(`/${id}`);
-      console.log(response);
-      dispatch(tarefasThunk());
-      return alert("Tarefa deletada com sucesso");
+      const confirmacao = confirm("Deseja excluir a tarefa?");
+      if (confirmacao) {
+        const response = await api.delete(`/${id}`);
+        console.log(response);
+        dispatch(tarefasThunk());
+        return alert("Tarefa deletada com sucesso");
+      } else {
+        return;
+      }
     } catch (error) {
       console.error("Erro ao deletar tarefa:", error);
     }
