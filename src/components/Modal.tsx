@@ -57,6 +57,9 @@ export default function BasicModal(props: BasicModalProps) {
         titulo: titulo,
         descricao: descricao,
       };
+      if (titulo.length < 4) {
+        return alert("Digite um titulo valido");
+      }
       const response = await api.put(`/${props.id}`, body);
       console.log(response, "aqui");
       handleClose();
