@@ -1,10 +1,10 @@
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { Grid, TextField } from "@mui/material";
 import { api } from "../services/api.services";
 import EditIcon from "@mui/icons-material/Edit";
 import styled from "styled-components";
-import { useState } from "react";
 import { useAppDispatch } from "../config/hook";
 import { tarefasThunk } from "../config/modules/tarefas.slice";
 
@@ -37,10 +37,14 @@ const DivButton = styled.div`
 
 interface BasicModalProps {
   id: string;
+  titulo: string;
+  descricao: string | undefined;
 }
 
 export default function BasicModal(props: BasicModalProps) {
   const [open, setOpen] = useState(false);
+  const [titulo, setTitulo] = useState(props.titulo);
+  const [descricao, setDescricao] = useState(props.descricao);
   const dispatch = useAppDispatch();
 
   const handleOpen = () => setOpen(true);
@@ -50,14 +54,13 @@ export default function BasicModal(props: BasicModalProps) {
     event.preventDefault();
     try {
       const body = {
-        titulo: event.target.titulo.value,
-        descricao: event.target.descricao.value,
+        titulo: titulo,
+        descricao: descricao,
       };
       const response = await api.put(`/${props.id}`, body);
       console.log(response, "aqui");
       handleClose();
-      dispatch(tarefasThunk);
-      console.log(dispatch(tarefasThunk()));
+      dispatch(tarefasThunk());
     } catch (error) {
       console.error("Erro ao atualizar tarefa:", error);
     }
@@ -81,6 +84,8 @@ export default function BasicModal(props: BasicModalProps) {
                 style={{ width: "100%" }}
                 id="titulo"
                 label="Tarefa"
+                value={titulo}
+                onChange={(event) => setTitulo(event.target.value)}
                 placeholder="Tarefa"
                 multiline
                 variant="outlined"
@@ -96,6 +101,8 @@ export default function BasicModal(props: BasicModalProps) {
                 }}
                 id="descricao"
                 label="Descrição"
+                value={descricao}
+                onChange={(event) => setDescricao(event.target.value)}
                 placeholder="Descreva sua tarefa"
                 multiline
                 variant="outlined"

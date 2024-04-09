@@ -57,7 +57,11 @@ export const Tarefas = () => {
                   <Button onClick={() => deletarTarefa(item.id!)}>
                     <DeleteIcon color="error" />
                   </Button>
-                  <BasicModal id={item.id!} />
+                  <BasicModal
+                    titulo={item.titulo}
+                    descricao={item.descricao}
+                    id={item.id!}
+                  />
                 </DivBotao>
               </DivTarefa>
             </AccordionSummary>
