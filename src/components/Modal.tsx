@@ -1,10 +1,12 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { Grid, TextField } from "@mui/material";
 import { api } from "../services/api.services";
 import EditIcon from "@mui/icons-material/Edit";
 import styled from "styled-components";
+import { useState } from "react";
+import { useAppDispatch } from "../config/hook";
+import { tarefasThunk } from "../config/modules/tarefas.slice";
 
 const style = {
   display: "flex",
@@ -38,25 +40,24 @@ interface BasicModalProps {
 }
 
 export default function BasicModal(props: BasicModalProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const atualizarTarefa = async (event: any) => {
-    if (!props.id) {
-      return alert("ID inválido");
-    }
-
+    event.preventDefault();
     try {
       const body = {
         titulo: event.target.titulo.value,
         descricao: event.target.descricao.value,
       };
-
       const response = await api.put(`/${props.id}`, body);
-      console.log(response.data);
+      console.log(response, "aqui");
       handleClose();
+      dispatch(tarefasThunk);
+      console.log(dispatch(tarefasThunk()));
     } catch (error) {
       console.error("Erro ao atualizar tarefa:", error);
     }

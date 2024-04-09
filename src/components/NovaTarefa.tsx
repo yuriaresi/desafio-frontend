@@ -18,6 +18,13 @@ const DivBotaoStyled = styled.div`
   display: flex;
   justify-content: center;
   margin: 30px;
+
+  Button {
+    border: solid 1px #2e7d32;
+    &:hover {
+      background-color: #dcf3dd;
+    }
+  }
 `;
 
 export const NovaTarefa = () => {
